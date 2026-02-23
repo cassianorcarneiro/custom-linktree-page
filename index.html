@@ -12,6 +12,26 @@ window.dataLayer=window.dataLayer||[];
 function gtag(){dataLayer.push(arguments);}
 gtag('js',new Date());
 gtag('config','G-6T4SEM3NSE');
+</script><script>
+document.querySelectorAll(".icon").forEach(el=>{
+let x=0,y=0,dx=0,dy=0;
+
+el.addEventListener("mousemove",e=>{
+const r=el.getBoundingClientRect();
+x=(e.clientX-r.left-r.width/2)/10;
+y=(e.clientY-r.top-r.height/2)/10;
+});
+
+function animate(){
+dx+=(x-dx)*.15;
+dy+=(y-dy)*.15;
+el.style.transform=`translate(${dx}px,${dy}px)`;
+requestAnimationFrame(animate);
+}
+animate();
+
+el.addEventListener("mouseleave",()=>{x=0;y=0});
+});
 </script>
 
 <style>
@@ -63,23 +83,48 @@ letter-spacing:2px;
 margin-bottom:25px;
 opacity:.85;
 }
+
 .icons{
 display:flex;
 justify-content:center;
-gap:20px;
+gap:24px;
 margin-bottom:40px;
 }
+
 .icon{
-width:55px;height:55px;
+width:60px;
+height:60px;
 border-radius:50%;
-background:var(--card);
+background:rgba(255,255,255,0.08);
+backdrop-filter:blur(12px) saturate(160%);
+-webkit-backdrop-filter:blur(12px) saturate(160%);
+border:1px solid rgba(255,255,255,0.18);
+box-shadow:
+0 8px 25px rgba(0,0,0,.35),
+inset 0 1px 1px rgba(255,255,255,.25),
+inset 0 -2px 6px rgba(0,0,0,.2);
 display:flex;
 align-items:center;
 justify-content:center;
-transition:.25s;
+transition:transform .5s cubic-bezier(.34,1.56,.64,1),
+box-shadow .4s;
 }
-.icon:hover{ transform:scale(1.15) rotate(5deg); }
-.icon svg{ width:26px; fill:#2f3a46;}
+
+.icon svg{
+width:28px;
+fill:white;
+opacity:.92;
+pointer-events:none;
+}
+
+.icon:hover{
+transform:translateY(-8px) scale(1.12);
+box-shadow:
+0 18px 40px rgba(0,0,0,.45),
+inset 0 1px 2px rgba(255,255,255,.35),
+inset 0 -3px 10px rgba(0,0,0,.25);
+}
+
 .button{
 display:block;
 text-decoration:none;
