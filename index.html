@@ -1,184 +1,208 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Profile</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profile</title>
 
-<!-- Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-6T4SEM3NSE"></script>
-<script>
-window.dataLayer=window.dataLayer||[];
-function gtag(){dataLayer.push(arguments);}
-gtag('js',new Date());
-gtag('config','G-6T4SEM3NSE');
-</script><script>
-document.querySelectorAll(".icon").forEach(el=>{
-let x=0,y=0,dx=0,dy=0;
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-6T4SEM3NSE"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-6T4SEM3NSE');
+  </script>
 
-el.addEventListener("mousemove",e=>{
-const r=el.getBoundingClientRect();
-x=(e.clientX-r.left-r.width/2)/10;
-y=(e.clientY-r.top-r.height/2)/10;
-});
+  <style>
+    :root {
+      --bg: #1f2730;
+      --fg: #ffffff;
+      --card: #eaeaea;
+    }
 
-function animate(){
-dx+=(x-dx)*.15;
-dy+=(y-dy)*.15;
-el.style.transform=`translate(${dx}px,${dy}px)`;
-requestAnimationFrame(animate);
-}
-animate();
+    @media (prefers-color-scheme: light) {
+      :root {
+        --bg: #f2f5f8;
+        --fg: #1a1a1a;
+        --card: #ffffff;
+      }
+    }
 
-el.addEventListener("mouseleave",()=>{x=0;y=0});
-});
-</script>
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, sans-serif;
+      background: radial-gradient(circle at top, #24303c, #11161b);
+      color: var(--fg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
 
-<style>
-:root{
---bg:#1f2730;
---fg:#ffffff;
---card:#eaeaea;
-}
-@media(prefers-color-scheme:light){
-:root{
---bg:#f2f5f8;
---fg:#1a1a1a;
---card:#ffffff;
-}}
-body{
-margin:0;
-font-family:system-ui;
-background:radial-gradient(circle at top,#24303c,#11161b);
-color:var(--fg);
-display:flex;
-align-items:center;
-justify-content:center;
-min-height:100vh;
-}
-.container{
-text-align:center;
-width:90%;
-max-width:420px;
-animation:fade 1s ease;
-}
-@keyframes fade{
-from{opacity:0;transform:translateY(20px)}
-to{opacity:1}
-}
-.avatar{
-width:140px;height:140px;
-border-radius:50%;
-object-fit:cover;
-margin-bottom:15px;
-animation:pop .8s ease;
-}
-@keyframes pop{
-0%{transform:scale(.5);opacity:0}
-100%{transform:scale(1);opacity:1}
-}
-.username{
-font-size:1.4rem;
-letter-spacing:2px;
-margin-bottom:25px;
-opacity:.85;
-}
+    .container {
+      text-align: center;
+      width: 90%;
+      max-width: 380px; /* Slightly narrower on PC */
+      animation: fade 1s ease;
+    }
 
-.icons{
-display:flex;
-justify-content:center;
-gap:24px;
-margin-bottom:40px;
-}
+    @keyframes fade {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; }
+    }
 
-.icon{
-width:60px;
-height:60px;
-border-radius:50%;
-background:rgba(255,255,255,0.08);
-backdrop-filter:blur(12px) saturate(160%);
--webkit-backdrop-filter:blur(12px) saturate(160%);
-border:1px solid rgba(255,255,255,0.18);
-box-shadow:
-0 8px 25px rgba(0,0,0,.35),
-inset 0 1px 1px rgba(255,255,255,.25),
-inset 0 -2px 6px rgba(0,0,0,.2);
-display:flex;
-align-items:center;
-justify-content:center;
-transition:transform .5s cubic-bezier(.34,1.56,.64,1),
-box-shadow .4s;
-}
+    .avatar {
+      width: 104px; /* Reduced from 140px */
+      height: 104px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 12px; /* Reduced from 15px */
+      animation: pop 0.8s ease;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    }
 
-.icon svg{
-width:28px;
-fill:white;
-opacity:.92;
-pointer-events:none;
-}
+    @keyframes pop {
+      0% { transform: scale(0.5); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
 
-.icon:hover{
-transform:translateY(-8px) scale(1.12);
-box-shadow:
-0 18px 40px rgba(0,0,0,.45),
-inset 0 1px 2px rgba(255,255,255,.35),
-inset 0 -3px 10px rgba(0,0,0,.25);
-}
+    .username {
+      font-size: 1.2rem; /* Reduced from 1.4rem */
+      letter-spacing: 1.5px;
+      margin-bottom: 20px; /* Reduced from 25px */
+      opacity: 0.9;
+      font-weight: 600;
+    }
 
-.button{
-display:block;
-text-decoration:none;
-padding:6px;
-border-radius:40px;
-background:linear-gradient(90deg,#f4e66a,#7de1d1);
-transition:.3s;
-}
-.button:hover{ transform:scale(1.05); }
-.button span{
-display:block;
-background:var(--card);
-padding:16px;
-border-radius:40px;
-font-weight:700;
-letter-spacing:2px;
-color:#2f3a46;
-}
-</style>
+    .icons {
+      display: flex;
+      justify-content: center;
+      gap: 16px; /* Reduced from 24px */
+      margin-bottom: 30px; /* Reduced from 40px */
+    }
+
+    .icon {
+      width: 48px; /* Reduced from 60px */
+      height: 48px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(12px) saturate(160%);
+      -webkit-backdrop-filter: blur(12px) saturate(160%);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      box-shadow: 
+        0 6px 18px rgba(0, 0, 0, 0.25),
+        inset 0 1px 1px rgba(255, 255, 255, 0.2),
+        inset 0 -2px 4px rgba(0, 0, 0, 0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s;
+    }
+
+    .icon svg {
+      width: 22px; /* Reduced from 28px */
+      fill: white;
+      opacity: 0.92;
+      pointer-events: none;
+    }
+
+    .icon:hover {
+      transform: translateY(-6px) scale(1.1); /* More contained animation */
+      box-shadow: 
+        0 12px 25px rgba(0, 0, 0, 0.35),
+        inset 0 1px 2px rgba(255, 255, 255, 0.3),
+        inset 0 -2px 6px rgba(0, 0, 0, 0.2);
+    }
+
+    .button {
+      display: block;
+      text-decoration: none;
+      padding: 4px; /* Thinner gradient border */
+      border-radius: 30px;
+      background: linear-gradient(90deg, #f4e66a, #7de1d1);
+      transition: transform 0.3s;
+    }
+
+    .button:hover { 
+      transform: scale(1.03); /* Smaller zoom to be more subtle */
+    }
+
+    .button span {
+      display: block;
+      background: var(--card);
+      padding: 12px 20px; /* Reduced to make it thinner */
+      border-radius: 30px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      font-size: 0.95rem;
+      color: #2f3a46;
+    }
+  </style>
 </head>
 
 <body>
-<div class="container">
-<img src="avatar.jpg" class="avatar">
-<div class="username" id="username"></div>
-<div class="icons" id="icons"></div>
-<a id="mainButton" class="button" target="_blank"><span></span></a>
-</div>
+  <div class="container">
+    <img src="avatar.jpg" class="avatar" alt="User avatar">
+    <div class="username" id="username"></div>
+    <div class="icons" id="icons"></div>
+    <a id="mainButton" class="button" target="_blank"><span></span></a>
+  </div>
 
-<script>
-fetch("config.json")
-.then(r=>r.json())
-.then(config=>{
+  <script>
+    fetch("config.json")
+      .then(r => r.json())
+      .then(config => {
+        document.getElementById("username").textContent = config.username;
 
-document.getElementById("username").textContent=config.username;
+        const btn = document.getElementById("mainButton");
+        btn.href = config.button.url;
+        btn.firstElementChild.textContent = config.button.text;
 
-const btn=document.getElementById("mainButton");
-btn.href=config.button.url;
-btn.firstElementChild.textContent=config.button.text;
+        document.getElementById("icons").innerHTML = config.links.map(link => `
+          <a class="icon" href="${link.url}" target="_blank" aria-label="${link.name}" onclick="track('${link.name}')">
+            ${link.svg}
+          </a>
+        `).join("");
 
-document.getElementById("icons").innerHTML=
-config.links.map(link=>`
-<a class="icon" href="${link.url}" target="_blank" onclick="track('${link.name}')">
-${link.svg}
-</a>`).join("");
+        initIconAnimations();
+      })
+      .catch(err => console.error("Error loading config.json:", err));
 
-});
+    function track(label) {
+      if (typeof gtag === "function") {
+        gtag("event", "click", { event_category: "link", event_label: label });
+      }
+    }
 
-function track(label){
-if(typeof gtag==="function"){
-gtag("event","click",{event_category:"link",event_label:label});
-}
-}
-</script>
+    function initIconAnimations() {
+      // Disables mouse movement animation on touch devices (mobile)
+      // to prevent weird scrolling behavior
+      if (window.matchMedia("(hover: none)").matches) return;
 
+      document.querySelectorAll(".icon").forEach(el => {
+        let x = 0, y = 0, dx = 0, dy = 0;
+
+        el.addEventListener("mousemove", e => {
+          const r = el.getBoundingClientRect();
+          x = (e.clientX - r.left - r.width / 2) / 10;
+          y = (e.clientY - r.top - r.height / 2) / 10;
+        });
+
+        function animate() {
+          dx += (x - dx) * 0.15;
+          dy += (y - dy) * 0.15;
+          el.style.transform = `translate(${dx}px, ${dy}px)`;
+          requestAnimationFrame(animate);
+        }
+        
+        animate();
+
+        el.addEventListener("mouseleave", () => { 
+          x = 0; 
+          y = 0; 
+        });
+      });
+    }
+  </script>
 </body>
 </html>
