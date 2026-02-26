@@ -42,8 +42,12 @@
     .container {
       text-align: center;
       width: 90%;
-      max-width: 380px; /* Slightly narrower on PC */
+      max-width: 380px;
       animation: fade 1s ease;
+      /* Added to ensure the wrapper centers correctly */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
 
     @keyframes fade {
@@ -52,11 +56,11 @@
     }
 
     .avatar {
-      width: 104px; /* Reduced from 140px */
+      width: 104px;
       height: 104px;
       border-radius: 50%;
       object-fit: cover;
-      margin-bottom: 12px; /* Reduced from 15px */
+      margin-bottom: 12px;
       animation: pop 0.8s ease;
       box-shadow: 0 4px 15px rgba(0,0,0,0.2);
     }
@@ -67,22 +71,33 @@
     }
 
     .username {
-      font-size: 1.2rem; /* Reduced from 1.4rem */
+      font-size: 1.2rem;
       letter-spacing: 1.5px;
-      margin-bottom: 20px; /* Reduced from 25px */
+      margin-bottom: 20px;
       opacity: 0.9;
       font-weight: 600;
+    }
+
+    /* --- NEW WRAPPER STYLE --- */
+    .content-wrapper {
+      /* This makes the wrapper shrink to fit the width of the icons row */
+      width: fit-content;
+      /* Ensures it stays centered within the main container */
+      margin: 0 auto;
     }
 
     .icons {
       display: flex;
       justify-content: center;
-      gap: 16px; /* Reduced from 24px */
-      margin-bottom: 30px; /* Reduced from 40px */
+      gap: 16px;
+      margin-bottom: 30px;
+      /* Important: ensures the icons don't wrap on very small screens, 
+         keeping the width consistent */
+      white-space: nowrap; 
     }
 
     .icon {
-      width: 48px; /* Reduced from 60px */
+      width: 48px;
       height: 48px;
       border-radius: 50%;
       background: rgba(255, 255, 255, 0.08);
@@ -97,45 +112,57 @@
       align-items: center;
       justify-content: center;
       transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s;
+      /* Fixes an issue where the border adds to the width calculation differently */
+      box-sizing: border-box; 
     }
 
     .icon svg {
-      width: 22px; /* Reduced from 28px */
+      width: 22px;
       fill: white;
       opacity: 0.92;
       pointer-events: none;
     }
 
     .icon:hover {
-      transform: translateY(-6px) scale(1.1); /* More contained animation */
+      transform: translateY(-6px) scale(1.1);
       box-shadow: 
         0 12px 25px rgba(0, 0, 0, 0.35),
         inset 0 1px 2px rgba(255, 255, 255, 0.3),
         inset 0 -2px 6px rgba(0, 0, 0, 0.2);
     }
 
+    /* --- UPDATED BUTTON STYLE --- */
     .button {
-      display: inline-block; /* <-- Aqui está a mudança */
+      /* Changed back to block so it can take 100% width */
+      display: block; 
+      /* Takes 100% of the new content-wrapper's width */
+      width: 100%;
+      /* Ensures padding doesn't make it wider than 100% */
+      box-sizing: border-box; 
       text-decoration: none;
-      padding: 4px; 
+      padding: 4px;
       border-radius: 30px;
       background: linear-gradient(90deg, #f4e66a, #7de1d1);
       transition: transform 0.3s;
     }
 
     .button:hover { 
-      transform: scale(1.03); /* Smaller zoom to be more subtle */
+      transform: scale(1.03);
     }
 
     .button span {
       display: block;
       background: var(--card);
-      padding: 12px 20px; /* Reduced to make it thinner */
+      padding: 12px 20px;
       border-radius: 30px;
       font-weight: 700;
       letter-spacing: 1.5px;
       font-size: 0.95rem;
       color: #2f3a46;
+      /* Ensures long text doesn't break the layout, adds ellipsis (...) */
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
   </style>
 </head>
@@ -144,9 +171,12 @@
   <div class="container">
     <img src="avatar.jpg" class="avatar" alt="User avatar">
     <div class="username" id="username"></div>
-    <div class="icons" id="icons"></div>
-    <a id="mainButton" class="button" target="_blank"><span></span></a>
-  </div>
+    
+    <div class="content-wrapper">
+      <div class="icons" id="icons"></div>
+      <a id="mainButton" class="button" target="_blank"><span></span></a>
+    </div>
+    </div>
 
   <script>
     fetch("config.json")
@@ -175,8 +205,6 @@
     }
 
     function initIconAnimations() {
-      // Disables mouse movement animation on touch devices (mobile)
-      // to prevent weird scrolling behavior
       if (window.matchMedia("(hover: none)").matches) return;
 
       document.querySelectorAll(".icon").forEach(el => {
