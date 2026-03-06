@@ -1,236 +1,231 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Profile</title>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
 
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-6T4SEM3NSE"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag() { dataLayer.push(arguments); }
-    gtag('js', new Date());
-    gtag('config', 'G-6T4SEM3NSE');
-  </script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-6T4SEM3NSE"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { dataLayer.push(arguments); }
+      gtag('js', new Date());
+      gtag('config', 'G-6T4SEM3NSE');
+    </script>
 
-  <style>
-    :root {
-      --bg: #1f2730;
-      --fg: #ffffff;
-      --card: #eaeaea;
-    }
-
-    @media (prefers-color-scheme: light) {
+    <style>
       :root {
-        --bg: #f2f5f8;
-        --fg: #1a1a1a;
-        --card: #ffffff;
+        --bg: #1f2730;
+        --fg: #ffffff;
+        --card: #eaeaea;
       }
-    }
 
-    body {
-      margin: 0;
-      font-family: system-ui, -apple-system, sans-serif;
-      background: radial-gradient(circle at top, #445c77 0%, #11161b 60%, #07090b 100%);
-      color: var(--fg);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-    }
-
-    .container {
-      text-align: center;
-      width: 90%;
-      max-width: 380px;
-      animation: fade 1s ease;
-      /* Added to ensure the wrapper centers correctly */
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    @keyframes fade {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; }
-    }
-
-    .avatar {
-      width: 104px;
-      height: 104px;
-      border-radius: 50%;
-      object-fit: cover;
-      margin-bottom: 12px;
-      animation: pop 0.8s ease;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-    }
-
-    @keyframes pop {
-      0% { transform: scale(0.5); opacity: 0; }
-      100% { transform: scale(1); opacity: 1; }
-    }
-
-    .username {
-      font-size: 1.2rem;
-      letter-spacing: 1.5px;
-      margin-bottom: 40px; /* Aumentado de 20px para 40px */
-      opacity: 0.9;
-      font-weight: 600;
-    }
-
-    /* --- NEW WRAPPER STYLE --- */
-    .content-wrapper {
-      /* This makes the wrapper shrink to fit the width of the icons row */
-      width: fit-content;
-      /* Ensures it stays centered within the main container */
-      margin: 0 auto;
-    }
-
-    .icons {
-      display: flex;
-      justify-content: center;
-      gap: 16px;
-      margin-bottom: 30px;
-      /* Important: ensures the icons don't wrap on very small screens, 
-         keeping the width consistent */
-      white-space: nowrap; 
-    }
-
-    .icon {
-      width: 48px;
-      height: 48px;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.08);
-      backdrop-filter: blur(12px) saturate(160%);
-      -webkit-backdrop-filter: blur(12px) saturate(160%);
-      border: 1px solid rgba(255, 255, 255, 0.18);
-      box-shadow: 
-        0 6px 18px rgba(0, 0, 0, 0.25),
-        inset 0 1px 1px rgba(255, 255, 255, 0.2),
-        inset 0 -2px 4px rgba(0, 0, 0, 0.15);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s;
-      /* Fixes an issue where the border adds to the width calculation differently */
-      box-sizing: border-box; 
-    }
-
-    .icon svg {
-      width: 22px;
-      fill: white;
-      opacity: 0.92;
-      pointer-events: none;
-    }
-
-    .icon:hover {
-      transform: translateY(-6px) scale(1.1);
-      box-shadow: 
-        0 12px 25px rgba(0, 0, 0, 0.35),
-        inset 0 1px 2px rgba(255, 255, 255, 0.3),
-        inset 0 -2px 6px rgba(0, 0, 0, 0.2);
-    }
-
-    /* --- UPDATED BUTTON STYLE --- */
-    .button {
-      /* Changed back to block so it can take 100% width */
-      display: block; 
-      /* Takes 100% of the new content-wrapper's width */
-      width: 100%;
-      /* Ensures padding doesn't make it wider than 100% */
-      box-sizing: border-box; 
-      text-decoration: none;
-      padding: 4px;
-      border-radius: 30px;
-      background: linear-gradient(90deg, #f4e66a, #7de1d1);
-      transition: transform 0.3s;
-    }
-
-    .button:hover { 
-      transform: scale(1.03);
-    }
-
-    .button span {
-      display: block;
-      background: var(--card);
-      padding: 12px 20px;
-      border-radius: 30px;
-      font-weight: 700;
-      letter-spacing: 1.5px;
-      font-size: 0.95rem;
-      color: #2f3a46;
-      /* Ensures long text doesn't break the layout, adds ellipsis (...) */
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-  </style>
-</head>
-
-<body>
-  <div class="container">
-    <img src="avatar.jpg" class="avatar" alt="User avatar">
-    <div class="username" id="username"></div>
-    
-    <div class="content-wrapper">
-      <div class="icons" id="icons"></div>
-      <a id="mainButton" class="button" target="_blank"><span></span></a>
-    </div>
-    </div>
-
-  <script>
-    fetch("config.json")
-      .then(r => r.json())
-      .then(config => {
-        document.getElementById("username").textContent = config.username;
-
-        const btn = document.getElementById("mainButton");
-        btn.href = config.button.url;
-        btn.firstElementChild.textContent = config.button.text;
-
-        document.getElementById("icons").innerHTML = config.links.map(link => `
-          <a class="icon" href="${link.url}" target="_blank" aria-label="${link.name}" onclick="track('${link.name}')">
-            ${link.svg}
-          </a>
-        `).join("");
-
-        initIconAnimations();
-      })
-      .catch(err => console.error("Error loading config.json:", err));
-
-    function track(label) {
-      if (typeof gtag === "function") {
-        gtag("event", "click", { event_category: "link", event_label: label });
-      }
-    }
-
-    function initIconAnimations() {
-      if (window.matchMedia("(hover: none)").matches) return;
-
-      document.querySelectorAll(".icon").forEach(el => {
-        let x = 0, y = 0, dx = 0, dy = 0;
-
-        el.addEventListener("mousemove", e => {
-          const r = el.getBoundingClientRect();
-          x = (e.clientX - r.left - r.width / 2) / 10;
-          y = (e.clientY - r.top - r.height / 2) / 10;
-        });
-
-        function animate() {
-          dx += (x - dx) * 0.15;
-          dy += (y - dy) * 0.15;
-          el.style.transform = `translate(${dx}px, ${dy}px)`;
-          requestAnimationFrame(animate);
+      @media (prefers-color-scheme: light) {
+        :root {
+          --bg: #f2f5f8;
+          --fg: #1a1a1a;
+          --card: #ffffff;
         }
-        
-        animate();
+      }
 
-        el.addEventListener("mouseleave", () => { 
-          x = 0; 
-          y = 0; 
+      body {
+        margin: 0;
+        font-family: system-ui, -apple-system, sans-serif;
+        background: radial-gradient(circle at top, #445c77 0%, #11161b 60%, #07090b 100%);
+        
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-size: cover;
+
+        color: var(--fg);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        
+        overscroll-behavior: none; 
+      }
+
+      .container {
+        text-align: center;
+        width: 90%;
+        max-width: 380px;
+        animation: fade 1s ease;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      @keyframes fade {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; }
+      }
+
+      .avatar {
+        width: 104px;
+        height: 104px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-bottom: 12px;
+        animation: pop 0.8s ease;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      }
+
+      @keyframes pop {
+        0% { transform: scale(0.5); opacity: 0; }
+        100% { transform: scale(1); opacity: 1; }
+      }
+
+      .username {
+        font-size: 1.2rem;
+        letter-spacing: 1.5px;
+        margin-bottom: 40px;
+        opacity: 0.9;
+        font-weight: 600;
+      }
+
+      .content-wrapper {
+        width: fit-content;
+        margin: 0 auto;
+      }
+
+      .icons {
+        display: flex;
+        justify-content: center;
+        gap: 16px;
+        margin-bottom: 30px;
+        white-space: nowrap; 
+      }
+
+      .icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.08);
+        backdrop-filter: blur(12px) saturate(160%);
+        -webkit-backdrop-filter: blur(12px) saturate(160%);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        box-shadow: 
+          0 6px 18px rgba(0, 0, 0, 0.25),
+          inset 0 1px 1px rgba(255, 255, 255, 0.2),
+          inset 0 -2px 4px rgba(0, 0, 0, 0.15);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s;
+        box-sizing: border-box; 
+      }
+
+      .icon svg {
+        width: 22px;
+        fill: white;
+        opacity: 0.92;
+        pointer-events: none;
+      }
+
+      .icon:hover {
+        transform: translateY(-6px) scale(1.1);
+        box-shadow: 
+          0 12px 25px rgba(0, 0, 0, 0.35),
+          inset 0 1px 2px rgba(255, 255, 255, 0.3),
+          inset 0 -2px 6px rgba(0, 0, 0, 0.2);
+      }
+
+      .button {
+        display: block; 
+        width: 100%;
+        box-sizing: border-box; 
+        text-decoration: none;
+        padding: 4px;
+        border-radius: 30px;
+        background: linear-gradient(90deg, #f4e66a, #7de1d1);
+        transition: transform 0.3s;
+      }
+
+      .button:hover { 
+        transform: scale(1.03);
+      }
+
+      .button span {
+        display: block;
+        background: var(--card);
+        padding: 12px 20px;
+        border-radius: 30px;
+        font-weight: 700;
+        letter-spacing: 1.5px;
+        font-size: 0.95rem;
+        color: #2f3a46;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <img src="avatar.jpg" class="avatar" alt="User avatar">
+      <div class="username" id="username"></div>
+      
+      <div class="content-wrapper">
+        <div class="icons" id="icons"></div>
+        <a id="mainButton" class="button" target="_blank"><span></span></a>
+      </div>
+    </div>
+
+    <script>
+      fetch("config.json")
+        .then(r => r.json())
+        .then(config => {
+          document.getElementById("username").textContent = config.username;
+
+          const btn = document.getElementById("mainButton");
+          btn.href = config.button.url;
+          btn.firstElementChild.textContent = config.button.text;
+
+          document.getElementById("icons").innerHTML = config.links.map(link => `
+            <a class="icon" href="${link.url}" target="_blank" aria-label="${link.name}" onclick="track('${link.name}')">
+              ${link.svg}
+            </a>
+          `).join("");
+
+          initIconAnimations();
+        })
+        .catch(err => console.error("Error loading config.json:", err));
+
+      function track(label) {
+        if (typeof gtag === "function") {
+          gtag("event", "click", { event_category: "link", event_label: label });
+        }
+      }
+
+      function initIconAnimations() {
+        if (window.matchMedia("(hover: none)").matches) return;
+
+        document.querySelectorAll(".icon").forEach(el => {
+          let x = 0, y = 0, dx = 0, dy = 0;
+
+          el.addEventListener("mousemove", e => {
+            const r = el.getBoundingClientRect();
+            x = (e.clientX - r.left - r.width / 2) / 10;
+            y = (e.clientY - r.top - r.height / 2) / 10;
+          });
+
+          function animate() {
+            dx += (x - dx) * 0.15;
+            dy += (y - dy) * 0.15;
+            el.style.transform = `translate(${dx}px, ${dy}px)`;
+            requestAnimationFrame(animate);
+          }
+          
+          animate();
+
+          el.addEventListener("mouseleave", () => { 
+            x = 0; 
+            y = 0; 
+          });
         });
-      });
-    }
-  </script>
-</body>
+      }
+    </script>
+  </body>
 </html>
