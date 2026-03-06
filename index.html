@@ -122,6 +122,7 @@
         inset 0 1px 1px rgba(255, 255, 255, .2),
         inset 0 -2px 4px rgba(0, 0, 0, .15);
       transform-origin: center;
+      touch-action: manipulation;
       will-change: transform;
       transition:
         transform .15s linear,
@@ -257,40 +258,57 @@
       }
     }
 
-    function initIconAnimations() {
-      if (window.matchMedia("(hover: none)").matches) return;
+    function initIconAnimations(){
+
+      const supportsHover = window.matchMedia("(hover: hover)").matches;
+
+      if(!supportsHover) return;
 
       const icons = Array.from(document.querySelectorAll(".icon"));
-      
-      const centers = icons.map(icon => {
+
+      const centers = icons.map(icon=>{
         const r = icon.getBoundingClientRect();
-        return r.left + r.width / 2;
+        return r.left + r.width/2;
       });
 
       let mouseX = null;
 
-      document.addEventListener("mousemove", e => {
+      window.addEventListener("pointermove", e=>{
         mouseX = e.clientX;
       });
 
-      document.addEventListener("mouseleave", () => {
+      window.addEventListener("pointerleave", ()=>{
         mouseX = null;
+        resetIcons();
       });
 
-      function animate() {
-        icons.forEach((icon, i) => {
+      function resetIcons(){
+        icons.forEach(icon=>{
+          icon.style.transform = "scale(1)";
+        });
+      }
+
+      function animate(){
+
+        icons.forEach((icon,i)=>{
+
           let scale = 1;
 
-          if (mouseX !== null) {
+          if(mouseX !== null){
+
             const distance = Math.abs(mouseX - centers[i]);
-            const influence = Math.exp(-(distance * distance) / 20000);
+            const influence = Math.exp(-(distance*distance)/20000);
+
             scale = 1 + influence * 0.6;
+
           }
 
           icon.style.transform = `scale(${scale})`;
+
         });
 
         requestAnimationFrame(animate);
+
       }
 
       animate();
