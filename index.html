@@ -225,24 +225,25 @@
       iconsContainer.innerHTML = "";
 
       (config.links || []).forEach(link => {
+        if (!link?.url) return;
+
         const a = document.createElement("a");
 
         a.className = "icon";
         a.href = link.url;
         a.target = "_blank";
         a.rel = "noopener";
-        a.setAttribute("aria-label", link.name);
-        a.setAttribute("title", link.name);
+        a.setAttribute("aria-label", link.name || "link");
+        a.setAttribute("title", link.name || "");
 
         const wrapper = document.createElement("span");
-        wrapper.innerHTML = link.svg;
+        wrapper.innerHTML = link.svg || "";
 
         if (wrapper.firstElementChild) {
           a.appendChild(wrapper.firstElementChild);
         }
 
         a.addEventListener("click", () => track(link.name));
-
         iconsContainer.appendChild(a);
       });
 
@@ -258,48 +259,38 @@
       }
     }
 
-    function initIconAnimations(){
+    function initIconAnimations() {
+      const supportsHover = window.matchMedia("(hover: hover)").matches;
+      const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-      if (window.matchMedia("(hover: none)").matches) return;
+      if (!supportsHover || reducedMotion) return;
 
       document.querySelectorAll(".icon").forEach(el => {
-
         let x = 0;
         let y = 0;
         let dx = 0;
         let dy = 0;
 
         el.addEventListener("mousemove", e => {
-
           const r = el.getBoundingClientRect();
-
           x = (e.clientX - r.left - r.width / 2) / 10;
           y = (e.clientY - r.top - r.height / 2) / 10;
-
         });
 
-        function animate(){
-
+        function animate() {
           dx += (x - dx) * 0.15;
           dy += (y - dy) * 0.15;
-
           el.style.transform = `translate(${dx}px, ${dy}px)`;
-
           requestAnimationFrame(animate);
-
         }
 
         animate();
 
         el.addEventListener("mouseleave", () => {
-
           x = 0;
           y = 0;
-
         });
-
       });
-
     }
 
     loadConfig();
