@@ -89,11 +89,20 @@
       opacity: .9;
     }
 
+    .content-wrapper {
+      display: grid;
+      grid-auto-rows: auto;
+      justify-content: center;
+      width: max-content;
+      margin: 0 auto;
+    }
+
     .icons {
       display: flex;
       gap: 16px;
       justify-content: center;
       margin-bottom: 30px;
+      align-items: center;
     }
 
     .icon {
@@ -103,6 +112,7 @@
       align-items: center;
       justify-content: center;
       border-radius: 50%;
+      cursor: pointer;
       background: rgba(255, 255, 255, .08);
       backdrop-filter: blur(12px) saturate(160%);
       -webkit-backdrop-filter: blur(12px) saturate(160%);
@@ -111,9 +121,11 @@
         0 6px 18px rgba(0, 0, 0, .25),
         inset 0 1px 1px rgba(255, 255, 255, .2),
         inset 0 -2px 4px rgba(0, 0, 0, .15);
+      transform-origin: center;
+      will-change: transform;
       transition:
-        transform .35s cubic-bezier(.34, 1.56, .64, 1),
-        box-shadow .3s;
+        transform .15s linear,
+        box-shadow .25s;
     }
 
     .icon svg {
@@ -134,9 +146,10 @@
     .button {
       display: block;
       width: 100%;
+      justify-self: stretch;
+      text-decoration: none;
       padding: 4px;
       border-radius: 30px;
-      text-decoration: none;
       background: linear-gradient(90deg, #f4e66a, #7de1d1);
       transition: transform .25s;
     }
@@ -168,15 +181,19 @@
       src="avatar.jpg"
       class="avatar"
       alt="User avatar"
+      loading="lazy"
+      decoding="async"
     />
 
     <div id="username" class="username"></div>
 
-    <div class="icons" id="icons"></div>
+    <div class="content-wrapper">
+      <div class="icons" id="icons"></div>
 
-    <a id="mainButton" class="button" target="_blank" rel="noopener">
-      <span></span>
-    </a>
+      <a id="mainButton" class="button" target="_blank" rel="noopener">
+        <span></span>
+      </a>
+    </div>
   </main>
 
   <script>
@@ -190,6 +207,7 @@
         renderProfile(config);
       } catch (err) {
         console.error("Config loading failed:", err);
+        document.getElementById("username").textContent = "Profile";
       }
     }
 
@@ -198,14 +216,14 @@
       const iconsContainer = document.getElementById("icons");
       const button = document.getElementById("mainButton");
 
-      username.textContent = config.username;
+      username.textContent = config.username || "Profile";
 
-      button.href = config.button.url;
-      button.firstElementChild.textContent = config.button.text;
+      button.href = config.button?.url || "#";
+      button.firstElementChild.textContent = config.button?.text || "Open";
 
       iconsContainer.innerHTML = "";
 
-      config.links.forEach(link => {
+      (config.links || []).forEach(link => {
         const a = document.createElement("a");
 
         a.className = "icon";
@@ -213,7 +231,14 @@
         a.target = "_blank";
         a.rel = "noopener";
         a.setAttribute("aria-label", link.name);
-        a.innerHTML = link.svg;
+        a.setAttribute("title", link.name);
+
+        const wrapper = document.createElement("span");
+        wrapper.innerHTML = link.svg;
+
+        if (wrapper.firstElementChild) {
+          a.appendChild(wrapper.firstElementChild);
+        }
 
         a.addEventListener("click", () => track(link.name));
 
@@ -235,32 +260,40 @@
     function initIconAnimations() {
       if (window.matchMedia("(hover: none)").matches) return;
 
-      document.querySelectorAll(".icon").forEach(el => {
-        let x = 0, y = 0;
-        let dx = 0, dy = 0;
-
-        el.addEventListener("mousemove", e => {
-          const rect = el.getBoundingClientRect();
-          x = (e.clientX - rect.left - rect.width / 2) / 10;
-          y = (e.clientY - rect.top - rect.height / 2) / 10;
-        });
-
-        function animate() {
-          dx += (x - dx) * 0.15;
-          dy += (y - dy) * 0.15;
-          
-          el.style.transform = `translate(${dx}px, ${dy}px)`;
-          
-          requestAnimationFrame(animate);
-        }
-
-        animate();
-
-        el.addEventListener("mouseleave", () => {
-          x = 0;
-          y = 0;
-        });
+      const icons = Array.from(document.querySelectorAll(".icon"));
+      
+      const centers = icons.map(icon => {
+        const r = icon.getBoundingClientRect();
+        return r.left + r.width / 2;
       });
+
+      let mouseX = null;
+
+      document.addEventListener("mousemove", e => {
+        mouseX = e.clientX;
+      });
+
+      document.addEventListener("mouseleave", () => {
+        mouseX = null;
+      });
+
+      function animate() {
+        icons.forEach((icon, i) => {
+          let scale = 1;
+
+          if (mouseX !== null) {
+            const distance = Math.abs(mouseX - centers[i]);
+            const influence = Math.exp(-(distance * distance) / 20000);
+            scale = 1 + influence * 0.6;
+          }
+
+          icon.style.transform = `scale(${scale})`;
+        });
+
+        requestAnimationFrame(animate);
+      }
+
+      animate();
     }
 
     loadConfig();
