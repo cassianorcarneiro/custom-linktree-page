@@ -1,66 +1,54 @@
-# 🔗 Custom LinkTree Page
+# Custom LinkTree Page
 
-> Minimal, fast, and responsive personal landing page — perfect for social media bios.
+A minimal link-in-bio page. Content comes from a JSON file. No framework, no build step, no runtime dependencies.
 
-A static personal landing page that loads its content dynamically from a JSON config file. Zero frameworks, zero build steps, zero external dependencies — just upload to GitHub Pages and you're live.
+![Stack](https://img.shields.io/badge/stack-HTML%20%7C%20CSS%20%7C%20JS-E34F26?logo=html5&logoColor=white)
+![Hosting](https://img.shields.io/badge/hosting-GitHub%20Pages-222222?logo=githubpages&logoColor=white)
+![License](https://img.shields.io/badge/license-MIT-green)
 
-<p align="center">
-  <img alt="Stack" src="https://img.shields.io/badge/Stack-HTML%20%2B%20JSON-blue?style=for-the-badge">
-  <img alt="License" src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge">
-  <img alt="Status" src="https://img.shields.io/badge/Performance-%3C1s%20Load-success?style=for-the-badge">
-</p>
+## Overview
 
----
+The site is a single `index.html` with vanilla JavaScript. On load, the script fetches `config.json` and renders the profile from it. To change the page, you edit JSON, not markup. The repository deploys to GitHub Pages as is.
 
-## 📦 Features
+Typical uses: an Instagram or TikTok bio link, a portfolio hub, a digital business card.
 
-- 📱 **Fully responsive** — looks great on mobile and desktop
-- ⚙️ **Dynamic content via JSON** — no HTML edits needed to update links
-- 🎨 **Built-in animations** — subtle motion without external libraries
-- 🌓 **Automatic dark/light theme** — adapts to the visitor's system preference
-- 🎯 **SVG icons** — crisp at any size, no icon fonts
-- 📈 **Google Analytics compatible** — drop in your measurement ID and you're tracked
-- 🪶 **Zero frameworks** — no React, no Vue, no build step
-- 🌐 **Works on GitHub Pages** — free hosting, custom domain optional
+## Features
 
----
+- **JSON-driven content.** Profile data lives in `config.json`.
+- **Responsive.** Mobile-first layout that also works on desktop.
+- **Automatic dark and light themes.** Follows the visitor's `prefers-color-scheme` setting.
+- **Inline SVG icons.** Sharp at any size, no icon font to download.
+- **CSS animations.** No animation library.
+- **Optional analytics.** Google Analytics 4, inactive until you add a measurement ID.
 
-## 🎯 Demo use cases
+## How it works
 
-Ideal for:
+```mermaid
+flowchart LR
+    B["Browser"] -->|"GET /"| H["index.html"]
+    H -->|"fetch()"| J["config.json"]
+    H -->|"img"| A["avatar.jpg"]
+    J --> R["DOM rendered by vanilla JS"]
+```
 
-- Instagram bio link
-- Portfolio hub
-- Personal business card
-- Creator link page
-- Lightweight personal homepage
+## Requirements
 
----
+- A GitHub account
+- A profile photo (square JPEG)
+- For local preview only: Python 3, or any static file server
 
-## 📋 Prerequisites
+## Getting started
 
-- A **GitHub account** (free)
-- A photo to use as your avatar
-- ~5 minutes
-
-That's it. No Node, no npm, no build tools.
-
----
-
-## 🚀 Quick start
-
-### 1. Get the files
-
-Clone or download this repository:
+### 1. Get the code
 
 ```bash
 git clone https://github.com/cassianorcarneiro/custom-linktree-page.git
 cd custom-linktree-page
 ```
 
-### 2. Customize your content
+### 2. Edit the content
 
-Open `config.json` and edit the values to match your profile:
+Edit `config.json`:
 
 ```json
 {
@@ -72,77 +60,76 @@ Open `config.json` and edit the values to match your profile:
 }
 ```
 
-Replace `avatar.jpg` with your own photo (keep the same filename).
+Replace `avatar.jpg` with your own photo and keep the filename. A 400 × 400 px image is sharp on high-density screens and keeps the page light.
 
-### 3. (Optional) Add Google Analytics
+### 3. Preview locally
 
-In `index.html`, find the placeholder:
+> [!IMPORTANT]
+> Opening `index.html` straight from disk does not work. Browsers block `fetch()` on `file://` URLs, so `config.json` never loads and the page renders empty. Serve the folder over HTTP instead.
 
+```bash
+python3 -m http.server 8000
+# open http://localhost:8000
 ```
-G-XXXXXXXXXX
-```
-
-Replace it with your Google Analytics measurement ID.
 
 ### 4. Deploy to GitHub Pages
 
-1. Push the repository to GitHub
-2. Go to **Settings → Pages**
-3. Select branch `main` (or `master`)
-4. Click **Save**
-5. Wait ~30 seconds — your page is live at `https://<username>.github.io/<repo-name>/`
+1. Push the repository to GitHub.
+2. Open **Settings → Pages**.
+3. Under **Build and deployment**, set **Source** to **Deploy from a branch**.
+4. Select branch `main` and folder `/ (root)`, then click **Save**.
+5. After a minute or two, the page is live at `https://<username>.github.io/<repository>/`.
 
----
+A custom domain can be set on the same settings screen.
 
-## 📁 Project structure
+## Configuration
+
+| Key | Type | Description |
+|---|---|---|
+| `username` | string | Handle displayed under the avatar |
+| `button.text` | string | Label of the link button |
+| `button.url` | string | Target URL of the link button |
+
+The current schema supports one button. Multiple links are on the roadmap.
+
+### Google Analytics (optional)
+
+Replace the `G-XXXXXXXXXX` placeholder in `index.html` with your GA4 measurement ID.
+
+> [!NOTE]
+> Analytics loads Google's `gtag.js` and sets cookies. Without it, the page loads no third-party code. Under GDPR or LGPD, analytics cookies may require visitor consent.
+
+## Performance
+
+A visit costs three requests by default: `index.html`, `config.json` and the avatar. There are no web fonts and no third-party scripts. The avatar is usually the largest asset, so compress it before committing.
+
+## Project structure
 
 ```
 custom-linktree-page/
-├── index.html      # Static page with vanilla JS that reads config.json
-├── config.json     # All editable content (username, links, etc.)
-├── avatar.jpg      # Your profile picture
+├── index.html     # Page markup, styles and the script that renders config.json
+├── config.json    # Editable content
+├── avatar.jpg     # Profile photo
+├── LICENSE
 └── README.md
 ```
 
----
+## Roadmap
 
-## ⚡ Performance
+- [ ] Multiple links via a JSON array
+- [ ] Theme colors set in `config.json`
+- [ ] QR code for the page URL
+- [ ] Multi-language content in `config.json`
+- [ ] Preset configurations (creator, developer, freelancer)
 
-Because this site has:
+## License
 
-- ❌ No frameworks
-- ❌ No external fonts
-- ❌ No third-party libraries
-- ❌ No trackers (unless you opt in)
+Released under the [MIT License](LICENSE).
 
-...it loads **in under a second** on a normal connection — and works even on slow mobile networks.
+## Author
 
----
+**Cassiano Ribeiro Carneiro** · [@cassianorcarneiro](https://github.com/cassianorcarneiro)
 
-## 🛣️ Roadmap
+## AI assistance
 
-- [ ] Multiple buttons/links via JSON array
-- [ ] Optional QR code generator for the page URL
-- [ ] Custom theme colors via JSON
-- [ ] Multi-language support driven from `config.json`
-- [ ] Vanity URL templates ready for popular use cases (creator, dev, freelancer)
-
----
-
-## 📜 License
-
-MIT — see `LICENSE` file.
-
-## 👤 Author
-
-**Cassiano Ribeiro Carneiro** — [@cassianorcarneiro](https://github.com/cassianorcarneiro)
-
----
-
-### 🤖 AI Assistance Disclosure
-
-The codebase architecture, organizational structure, and stylistic formatting of this repository were refactored and optimized leveraging [Claude](https://www.anthropic.com/claude) by Anthropic. All core business logic and intellectual property remain the work of the repository authors and are governed by the project's license.
-
----
-
-> *A bio link page that loads faster than the apps it links to.*
+Claude (Anthropic) was used to refactor the structure and formatting of this repository. The core logic is the author's own work.
